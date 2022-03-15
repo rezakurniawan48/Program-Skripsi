@@ -1,0 +1,651 @@
+from logging import error
+import LMKNN
+import KNN
+import Uji_Akurasi as uji
+import baca_csv
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMessageBox
+
+
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(1366, 768)
+        MainWindow.setTabShape(QtWidgets.QTabWidget.Rounded)
+
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.frame = QtWidgets.QFrame(self.centralwidget)
+        self.frame.setGeometry(QtCore.QRect(-1, -1, 331, 771))
+        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setObjectName("frame")
+        
+        self.label_14 = QtWidgets.QLabel(self.frame)
+        self.label_14.setGeometry(QtCore.QRect(0, 0, 331, 71))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_14.setFont(font)
+        self.label_14.setStyleSheet("background-color: rgb(255, 170, 127);")
+        self.label_14.setFrameShape(QtWidgets.QFrame.Box)
+        self.label_14.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.label_14.setLineWidth(4)
+        self.label_14.setObjectName("label_14")
+        
+        self.tablelog = QtWidgets.QTableWidget(self.frame)
+        self.tablelog.setGeometry(QtCore.QRect(0, 70, 331, 691))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        self.tablelog.setFont(font)
+        self.tablelog.setObjectName("tablelog")
+        self.tablelog.setColumnCount(2)
+        self.tablelog.setRowCount(0)
+        item = QtWidgets.QTableWidgetItem()
+        self.tablelog.setHorizontalHeaderItem(0, item)
+        self.tablelog.setColumnWidth(0,165)
+        item = QtWidgets.QTableWidgetItem()
+        self.tablelog.setHorizontalHeaderItem(1, item)
+        self.tablelog.setColumnWidth(1,166)
+        
+        self.frame_2 = QtWidgets.QFrame(self.centralwidget)
+        self.frame_2.setGeometry(QtCore.QRect(330, 0, 1031, 761))
+        self.frame_2.setStyleSheet("background :rgb(255, 145, 55); border-color: rgb(22, 22, 22);")
+        self.frame_2.setFrameShape(QtWidgets.QFrame.Panel)
+        self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_2.setLineWidth(5)
+        self.frame_2.setObjectName("frame_2")
+        
+        self.label = QtWidgets.QLabel(self.frame_2)
+        self.label.setGeometry(QtCore.QRect(440, 0, 161, 41))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label.setFont(font)
+        self.label.setStyleSheet("background-color: rgb(255, 255, 255);border-color: rgb(0, 170, 255);")
+        self.label.setFrameShape(QtWidgets.QFrame.Panel)
+        self.label.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.label.setLineWidth(4)
+        self.label.setObjectName("label")
+        
+        self.frame_3 = QtWidgets.QFrame(self.frame_2)
+        self.frame_3.setGeometry(QtCore.QRect(80, 50, 891, 151))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(14)
+        font.setBold(False)
+        font.setWeight(50)
+        self.frame_3.setFont(font)
+        self.frame_3.setStyleSheet("background-color: rgb(255, 255, 127);")
+        self.frame_3.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame_3.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame_3.setLineWidth(4)
+        self.frame_3.setObjectName("frame_3")
+        
+        self.label_2 = QtWidgets.QLabel(self.frame_3)
+        self.label_2.setGeometry(QtCore.QRect(40, 20, 91, 31))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_2.setFont(font)
+        self.label_2.setObjectName("label_2")
+        
+        self.label_3 = QtWidgets.QLabel(self.frame_3)
+        self.label_3.setGeometry(QtCore.QRect(40, 80, 61, 31))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_3.setFont(font)
+        self.label_3.setObjectName("label_3")
+        
+        self.label_4 = QtWidgets.QLabel(self.frame_3)
+        self.label_4.setGeometry(QtCore.QRect(160, 20, 21, 31))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(14)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_4.setFont(font)
+        self.label_4.setObjectName("label_4")
+        
+        self.label_5 = QtWidgets.QLabel(self.frame_3)
+        self.label_5.setGeometry(QtCore.QRect(160, 80, 21, 31))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(14)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_5.setFont(font)
+        self.label_5.setObjectName("label_5")
+        
+        self.LMKNN = QtWidgets.QRadioButton(self.frame_3)
+        self.LMKNN.setGeometry(QtCore.QRect(240, 20, 350, 31))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setWeight(50)
+        self.LMKNN.setFont(font)
+        self.LMKNN.setObjectName("LMKNN")
+        
+        self.KNN = QtWidgets.QRadioButton(self.frame_3)
+        self.KNN.setGeometry(QtCore.QRect(650, 20, 200, 31))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setWeight(50)
+        self.KNN.setFont(font)
+        self.KNN.setObjectName("KNN")
+        
+        self.KBox = QtWidgets.QComboBox(self.frame_3)
+        self.KBox.setGeometry(QtCore.QRect(240, 80, 161, 31))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setWeight(50)
+        self.KBox.setFont(font)
+        self.KBox.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.KBox.setObjectName("KBox")
+        self.KBox.addItem("")
+        self.KBox.addItem("")
+        self.KBox.addItem("")
+        self.KBox.addItem("")
+        self.KBox.addItem("")
+        self.KBox.addItem("")
+        self.KBox.addItem("")
+        self.KBox.addItem("")
+        self.KBox.addItem("")
+        self.KBox.addItem("")
+        
+        self.frame_5 = QtWidgets.QFrame(self.frame_2)
+        self.frame_5.setGeometry(QtCore.QRect(510, 220, 500, 531))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.frame_5.setFont(font)
+        self.frame_5.setStyleSheet("background-color: rgb(255, 255, 127);")
+        self.frame_5.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame_5.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame_5.setLineWidth(2)
+        self.frame_5.setObjectName("frame_5")
+        
+        self.tableAcc = QtWidgets.QTableWidget(self.frame_5)
+        self.tableAcc.setGeometry(QtCore.QRect(10, 120, 480, 381))
+        self.tableAcc.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.tableAcc.setObjectName("tableAcc")
+        self.tableAcc.setColumnCount(10)
+        self.tableAcc.setRowCount(0)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableAcc.setHorizontalHeaderItem(0, item)
+        self.tableAcc.setColumnWidth(0,78)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableAcc.setHorizontalHeaderItem(1, item)
+        self.tableAcc.setColumnWidth(1,78)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableAcc.setHorizontalHeaderItem(2, item)
+        self.tableAcc.setColumnWidth(2,78)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableAcc.setHorizontalHeaderItem(3, item)
+        self.tableAcc.setColumnWidth(3,78)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableAcc.setHorizontalHeaderItem(4, item)
+        self.tableAcc.setColumnWidth(4,78)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableAcc.setHorizontalHeaderItem(5, item)
+        self.tableAcc.setColumnWidth(5,78)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableAcc.setHorizontalHeaderItem(6, item)
+        self.tableAcc.setColumnWidth(5,78)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableAcc.setHorizontalHeaderItem(7, item)
+        self.tableAcc.setColumnWidth(5,78)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableAcc.setHorizontalHeaderItem(8, item)
+        self.tableAcc.setColumnWidth(5,78)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableAcc.setHorizontalHeaderItem(9, item)
+        self.tableAcc.setColumnWidth(5,78)
+        
+        
+        self.label_16 = QtWidgets.QLabel(self.frame_5)
+        self.label_16.setGeometry(QtCore.QRect(170, 20, 181, 31))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(14)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_16.setFont(font)
+        self.label_16.setObjectName("label_16")
+        
+        self.StartButton2 = QtWidgets.QPushButton(self.frame_5)
+        self.StartButton2.setGeometry(QtCore.QRect(160, 70, 201, 31))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.StartButton2.setFont(font)
+        self.StartButton2.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.StartButton2.setObjectName("StartButton2")
+        
+        self.frame_4 = QtWidgets.QFrame(self.frame_2)
+        self.frame_4.setGeometry(QtCore.QRect(40, 220, 441, 281))
+        self.frame_4.setStyleSheet("background-color: rgb(255, 255, 127);")
+        self.frame_4.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame_4.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame_4.setLineWidth(2)
+        self.frame_4.setObjectName("frame_4")
+        
+        self.label_6 = QtWidgets.QLabel(self.frame_4)
+        self.label_6.setGeometry(QtCore.QRect(160, 10, 101, 31))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(14)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_6.setFont(font)
+        self.label_6.setObjectName("label_6")
+        
+        self.label_7 = QtWidgets.QLabel(self.frame_4)
+        self.label_7.setGeometry(QtCore.QRect(50, 40, 321, 20))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setItalic(True)
+        font.setWeight(50)
+        font.setStrikeOut(False)
+        self.label_7.setFont(font)
+        self.label_7.setObjectName("label_7")
+        
+        self.label_8 = QtWidgets.QLabel(self.frame_4)
+        self.label_8.setGeometry(QtCore.QRect(10, 90, 91, 21))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_8.setFont(font)
+        self.label_8.setObjectName("label_8")
+       
+        self.label_9 = QtWidgets.QLabel(self.frame_4)
+        self.label_9.setGeometry(QtCore.QRect(210, 90, 91, 21))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_9.setFont(font)
+        self.label_9.setObjectName("label_9")
+        
+        self.label_10 = QtWidgets.QLabel(self.frame_4)
+        self.label_10.setGeometry(QtCore.QRect(10, 130, 91, 21))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_10.setFont(font)
+        self.label_10.setObjectName("label_10")
+        
+        self.label_11 = QtWidgets.QLabel(self.frame_4)
+        self.label_11.setGeometry(QtCore.QRect(210, 130, 91, 21))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_11.setFont(font)
+        self.label_11.setObjectName("label_11")
+        
+        self.label_12 = QtWidgets.QLabel(self.frame_4)
+        self.label_12.setGeometry(QtCore.QRect(10, 170, 91, 21))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_12.setFont(font)
+        self.label_12.setObjectName("label_12")
+        
+        self.label_13 = QtWidgets.QLabel(self.frame_4)
+        self.label_13.setGeometry(QtCore.QRect(210, 170, 91, 21))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_13.setFont(font)
+        self.label_13.setObjectName("label_13")
+        
+        self.sem1 = QtWidgets.QLineEdit(self.frame_4)
+        self.sem1.setGeometry(QtCore.QRect(110, 90, 80, 21))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(10)
+        self.sem1.setFont(font)
+        self.sem1.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.sem1.setObjectName("sem1")
+        
+        self.sem2 = QtWidgets.QLineEdit(self.frame_4)
+        self.sem2.setGeometry(QtCore.QRect(310, 90, 80, 21))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(10)
+        self.sem2.setFont(font)
+        self.sem2.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.sem2.setObjectName("sem2")
+        
+        self.sem3 = QtWidgets.QLineEdit(self.frame_4)
+        self.sem3.setGeometry(QtCore.QRect(110, 130, 80, 21))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(10)
+        self.sem3.setFont(font)
+        self.sem3.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.sem3.setText("")
+        self.sem3.setObjectName("sem3")
+        
+        self.sem4 = QtWidgets.QLineEdit(self.frame_4)
+        self.sem4.setGeometry(QtCore.QRect(310, 130, 80, 21))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(10)
+        self.sem4.setFont(font)
+        self.sem4.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.sem4.setObjectName("sem4")
+        
+        self.sem5 = QtWidgets.QLineEdit(self.frame_4)
+        self.sem5.setGeometry(QtCore.QRect(110, 170, 80, 21))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(10)
+        self.sem5.setFont(font)
+        self.sem5.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.sem5.setObjectName("sem5")
+        
+        self.sem6 = QtWidgets.QLineEdit(self.frame_4)
+        self.sem6.setGeometry(QtCore.QRect(310, 170, 80, 21))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(10)
+        self.sem6.setFont(font)
+        self.sem6.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.sem6.setObjectName("sem6")
+        
+        self.StartButton = QtWidgets.QPushButton(self.frame_4)
+        self.StartButton.setGeometry(QtCore.QRect(120, 220, 211, 31))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.StartButton.setFont(font)
+        self.StartButton.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.StartButton.setObjectName("StartButton")
+        
+        self.frame1 = QtWidgets.QFrame(self.frame_2)
+        self.frame1.setGeometry(QtCore.QRect(40, 510, 441, 241))
+        self.frame1.setStyleSheet("background-color: rgb(249, 249, 124);")
+        self.frame1.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame1.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.frame1.setLineWidth(4)
+        self.frame1.setObjectName("frame1")
+        
+        self.label_15 = QtWidgets.QLabel(self.frame1)
+        self.label_15.setGeometry(QtCore.QRect(130, 20, 191, 61))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_15.setFont(font)
+        self.label_15.setObjectName("label_15")
+        
+        self.Hasil = QtWidgets.QLabel(self.frame1)
+        self.Hasil.setGeometry(QtCore.QRect(90, 100, 281, 41))
+        self.Hasil.setMinimumSize(QtCore.QSize(281, 0))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.Hasil.setFont(font)
+        self.Hasil.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.Hasil.setFrameShape(QtWidgets.QFrame.Box)
+        self.Hasil.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.Hasil.setLineWidth(3)
+        self.Hasil.setText("")
+        self.Hasil.setAlignment(QtCore.Qt.AlignCenter)
+        self.Hasil.setObjectName("Hasil")
+
+        MainWindow.setCentralWidget(self.centralwidget)
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+    
+    def error(self):
+        msg = QMessageBox()
+        msg.setWindowTitle("Error")
+        msg.setText("Ups Ada yang Salah!")
+        msg.setIcon(QMessageBox.Warning)
+        msg.show()
+        msg.exec_()
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.label_14.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">Hasil Perhitungan <br/>Rumus Euclidean Distance</p></body></html>"))
+        self.label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">Input Data</p></body></html>"))
+        self.label_2.setText(_translate("MainWindow", "Metode "))
+        self.label_3.setText(_translate("MainWindow", "Nilai K"))
+        self.label_4.setText(_translate("MainWindow", ":"))
+        self.label_5.setText(_translate("MainWindow", ":"))
+        self.LMKNN.setText(_translate("MainWindow", "Local Mean Based K-Nearest Neighbor"))
+        self.KNN.setText(_translate("MainWindow", "K-Nearest Neighbor"))
+        self.KBox.setItemText(0, _translate("MainWindow", "1"))
+        self.KBox.setItemText(1, _translate("MainWindow", "2"))
+        self.KBox.setItemText(2, _translate("MainWindow", "3"))
+        self.KBox.setItemText(3, _translate("MainWindow", "4"))
+        self.KBox.setItemText(4, _translate("MainWindow", "5"))
+        self.KBox.setItemText(5, _translate("MainWindow", "6"))
+        self.KBox.setItemText(6, _translate("MainWindow", "7"))
+        self.KBox.setItemText(7, _translate("MainWindow", "8"))
+        self.KBox.setItemText(8, _translate("MainWindow", "9"))
+        self.KBox.setItemText(9, _translate("MainWindow", "10"))
+        item = self.tableAcc.horizontalHeaderItem(0)
+        item.setText(_translate("MainWindow", "Uji Ke-"))
+        item = self.tableAcc.horizontalHeaderItem(1)
+        item.setText(_translate("MainWindow", "Accuracy"))
+        item = self.tableAcc.horizontalHeaderItem(2)
+        item.setText(_translate("MainWindow", "Precission"))
+        item = self.tableAcc.horizontalHeaderItem(3)
+        item.setText(_translate("MainWindow", "Recall"))
+        item = self.tableAcc.horizontalHeaderItem(4)
+        item.setText(_translate("MainWindow", "F1 Score"))
+        item = self.tableAcc.horizontalHeaderItem(5)
+        item.setText(_translate("MainWindow", "Time (s)"))
+        item = self.tableAcc.horizontalHeaderItem(6)
+        item.setText(_translate("MainWindow", "True Positives"))
+        item = self.tableAcc.horizontalHeaderItem(7)
+        item.setText(_translate("MainWindow", "True Negatives"))
+        item = self.tableAcc.horizontalHeaderItem(8)
+        item.setText(_translate("MainWindow", "False Positive"))
+        item = self.tableAcc.horizontalHeaderItem(9)
+        item.setText(_translate("MainWindow", "False Negative"))
+        self.label_16.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">Pengujian Akurasi</p></body></html>"))
+        self.StartButton2.setText(_translate("MainWindow", "Mulai Pengujian"))
+        self.label_6.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">Input IP</p></body></html>"))
+        self.label_7.setText(_translate("MainWindow", "*Range Nilai 0 - 4.00 (contoh masukan : 3.67)"))
+        self.label_8.setText(_translate("MainWindow", "Semester 1 :"))
+        self.label_9.setText(_translate("MainWindow", "Semester 2 :"))
+        self.label_10.setText(_translate("MainWindow", "Semester 3 :"))
+        self.label_11.setText(_translate("MainWindow", "Semester 4 :"))
+        self.label_12.setText(_translate("MainWindow", "Semester 5 :"))
+        self.label_13.setText(_translate("MainWindow", "Semester 6 :"))
+        self.StartButton.setText(_translate("MainWindow", "Mulai Klasifikasi"))
+        self.label_15.setText(_translate("MainWindow", "Hasil Pengklasifikasian"))
+
+   
+class aktifitas(QtWidgets.QMainWindow):
+    def __init__(self): 
+        QtWidgets.QMainWindow.__init__(self) 
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
+    
+        self.ui.StartButton.clicked.connect(self.start_klasifikasi)
+        self.ui.StartButton2.clicked.connect(self.start_pengujian)
+    
+    def get_input(self):
+        x1 = float(self.ui.sem1.text())
+        x2 = float(self.ui.sem2.text())
+        x3 = float(self.ui.sem3.text())
+        x4 = float(self.ui.sem4.text())
+        x5 = float(self.ui.sem5.text())
+        x6 = float(self.ui.sem6.text())
+        uji = [x1,x2,x3,x4,x5,x6]
+        return uji
+
+    def get_k(self):
+        k = int(self.ui.KBox.currentText())
+        return k
+
+    def tampil_KNN(self, jarak):
+            
+        self.ui.tablelog.horizontalHeaderItem(0).setText("Label")
+        self.ui.tablelog.horizontalHeaderItem(1).setText("Jarak Euclidean")
+        self.ui.tablelog.setColumnWidth(0,100)
+        self.ui.tablelog.setColumnWidth(1,175)
+
+        row = 0
+        self.ui.tablelog.setRowCount(len(jarak))
+        for n in jarak:
+            self.ui.tablelog.setItem(row, 0, QtWidgets.QTableWidgetItem(str(n[2])))
+            self.ui.tablelog.setItem(row, 1, QtWidgets.QTableWidgetItem(str(round(n[1],3))))
+            row = row + 1
+
+    def tampil_LMKNN(self, jarak_tepat, jarak_lambat):
+            
+        self.ui.tablelog.horizontalHeaderItem(0).setText("Jarak Lulus \nTepat Waktu")
+        self.ui.tablelog.horizontalHeaderItem(1).setText("Jarak Lulus \nTidak Tepat Waktu")
+        self.ui.tablelog.setColumnWidth(0,120)
+        self.ui.tablelog.setColumnWidth(1,160)
+        
+        row = 0
+        self.ui.tablelog.setRowCount(len(jarak_tepat))
+        
+        for n in jarak_tepat:
+            self.ui.tablelog.setItem(row, 0, QtWidgets.QTableWidgetItem(str(n[0]) + str(' : ') + str(round(n[1],3))))
+            row = row + 1
+            
+        self.ui.tablelog.setRowCount(len(jarak_lambat))
+        row = 0
+        for n in jarak_lambat:
+            self.ui.tablelog.setItem(row, 1, QtWidgets.QTableWidgetItem(str(n[0]) + str(' : ') + str(round(n[1],3))))
+            row = row + 1
+
+    def tampil_akurasi(self, hasil_akurasi):
+            
+        self.ui.tableAcc.setColumnWidth(0,75)
+        self.ui.tableAcc.setColumnWidth(1,75)
+        self.ui.tableAcc.setColumnWidth(2,75)
+        self.ui.tableAcc.setColumnWidth(3,75)
+        self.ui.tableAcc.setColumnWidth(4,75)
+        self.ui.tableAcc.setColumnWidth(5,75)
+        
+        row = 0
+        self.ui.tableAcc.setRowCount(len(hasil_akurasi))
+        
+        for n in hasil_akurasi:
+            self.ui.tableAcc.setItem(row, 0, QtWidgets.QTableWidgetItem(str((n[0]))))
+            self.ui.tableAcc.setItem(row, 1, QtWidgets.QTableWidgetItem(str(round(n[1],3))))
+            self.ui.tableAcc.setItem(row, 2, QtWidgets.QTableWidgetItem(str(round(n[2],3))))
+            self.ui.tableAcc.setItem(row, 3, QtWidgets.QTableWidgetItem(str(round(n[3],3))))
+            self.ui.tableAcc.setItem(row, 4, QtWidgets.QTableWidgetItem(str(round(n[4],3))))
+            self.ui.tableAcc.setItem(row, 5, QtWidgets.QTableWidgetItem(str(round(n[5],3))))
+            self.ui.tableAcc.setItem(row, 6, QtWidgets.QTableWidgetItem(str(round(n[6],3))))
+            self.ui.tableAcc.setItem(row, 7, QtWidgets.QTableWidgetItem(str(round(n[7],3))))
+            self.ui.tableAcc.setItem(row, 8, QtWidgets.QTableWidgetItem(str(round(n[8],3))))
+            self.ui.tableAcc.setItem(row, 9, QtWidgets.QTableWidgetItem(str(round(n[9],3))))
+            row = row + 1
+    
+    def start_klasifikasi(self):
+        try :
+            uji = self.get_input()
+            k = self.get_k()
+            dataset = baca_csv.baca("Data/Dataset.csv")
+            data, target = dataset.get_data()
+
+            if((0<=uji[0]<=4)and (0<=uji[0]<=4)and (0<=uji[1]<=4)and (0<=uji[2]<=4)and (0<=uji[3]<=4) and(0<=uji[4]<=4)):
+                if(self.ui.LMKNN.isChecked()):
+                    model = LMKNN.LMKNN(k)
+                    model.set_dataset(data, target)
+                    hasil = model.get_hasil_klasifikasi(uji)
+                    jarak_tepat, jarak_lambat = model.rumus(uji)
+
+                    self.tampil_LMKNN(jarak_tepat, jarak_lambat)
+                    if(hasil == "1"):
+                        self.ui.Hasil.setText("Lulus Tepat Waktu")
+                    else :
+                        self.ui.Hasil.setText("Lulus Tidak Tepat Waktu")
+                    
+
+                elif(self.ui.KNN.isChecked()):
+                    model = KNN.KNN(k)
+                    model.set_dataset(data, target)
+                    jarak = model.rumus(uji)
+                    hasil = model.get_hasil_klasifikasi(uji)
+                    
+                    self.tampil_KNN(jarak)
+                    if(hasil == "1"):
+                        self.ui.Hasil.setText("Lulus Tepat Waktu")
+                    else :
+                        self.ui.Hasil.setText("Lulus Tidak Tepat Waktu")
+
+
+                else : self.ui.error()
+            else : self.ui.error()
+        except :
+            self.ui.error()
+        
+    def start_pengujian(self):
+        try :
+            k = self.get_k()
+            dataset = baca_csv.baca("Data/Dataset.csv")
+            data, target = dataset.get_data()
+
+            if(self.ui.LMKNN.isChecked()):
+                model = uji.uji("1", k, data, target)
+                hasil = model.start_tes()
+                self.tampil_akurasi(hasil)
+                    
+            elif(self.ui.KNN.isChecked()):
+                model = uji.uji("0", k, data, target)
+                hasil = model.start_tes()
+                self.tampil_akurasi(hasil)
+
+            else : self.ui.error()
+
+        except:
+            self.ui.error()
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    mulai = aktifitas()
+    mulai.show()
+    sys.exit(app.exec_())
+
+
+
