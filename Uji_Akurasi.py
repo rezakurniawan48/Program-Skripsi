@@ -52,7 +52,4 @@ class uji:
 
         hasil.append(mean)
 
-        for i in hasil :
-            print(i[5])
-        print("")
         return hasil
