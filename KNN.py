@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 class KNN:
     
@@ -21,7 +22,7 @@ class KNN:
         z = 0.0
         for n in range(len(x1)) :
             z = z + ((float(x1[n]) - float(x2[n])) ** 2)
-        z = z / len(x1)
+        z = math.sqrt(z)
         return z
 
     def rumus (self, uji):

@@ -1,4 +1,6 @@
 import time
+
+from joblib import PrintTime
 import KNN, LMKNN
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 from sklearn.model_selection import KFold
@@ -38,6 +40,7 @@ class uji:
             compute_time = round((time.time() - start_time), 3)
             [tn, fp], [fn, tp] = confusion_matrix(y_test, y_pred)
             hasil.append([index, acc, pre, rec, f1, compute_time,tp,tn,fp,fn])
+            
             index +=1
 
         mean = ['Rata-Rata', 0, 0, 0, 0, 0, 0, 0, 0, 0]
